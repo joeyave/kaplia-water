@@ -27,7 +27,7 @@
 <section class="cafe-page cafe-items">
 
     {{range $i, $item := .items}}
-        <div class="cafe-item js-item" data-item-id="{{$item.ID}}" data-item-price="{{$item.Price}}">
+        <div class="cafe-item js-item" data-item-id="{{hex $item.ID}}" data-item-price="{{$item.Price}}">
             <div class="cafe-item-counter js-item-counter">1</div>
             <div class="cafe-item-photo">
                 <picture class="cafe-item-lottie js-item-lottie">
@@ -62,7 +62,7 @@
         </div>
         <div class="cafe-order-items">
             {{range $i, $item := .items}}
-                <div class="cafe-order-item js-order-item" data-item-id="{{$item.ID}}">
+                <div class="cafe-order-item js-order-item" data-item-id="{{hex $item.ID}}">
                     <div class="cafe-order-item-photo">
                         <picture class="cafe-item-lottie js-item-lottie">
                             <img src="{{$item.PhotoURL}}">
@@ -84,9 +84,9 @@
             Дата доставки замовлення.
         </div>
         <input type="tel" class="cafe-text-field js-order-phone-field cafe-block"
-                  placeholder="380123456789" pattern="380[0-9]{9}" required>
+               placeholder="380123456789" pattern="380[0-9]{9}" required>
         <div class="cafe-text-field-hint">
-            Номер телефону у форматі <span style="font-weight: bold">380123456789</span>.
+            Номер телефону у форматі <span>380123456789</span>.
         </div>
         <textarea class="cafe-text-field js-order-address-field cafe-block" rows="1"
                   placeholder="Адреса…" required></textarea>

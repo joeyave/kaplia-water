@@ -1,50 +1,27 @@
 package controller
 
 import (
+	"context"
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/gin-gonic/gin"
+	"github.com/joeyave/kaplia-water/repository"
 	"net/http"
 )
 
 type WebAppController struct {
-	Bot *gotgbot.Bot
-}
-
-type Item struct {
-	ID          string
-	Price       int
-	PhotoURL    string
-	Title       string
-	Description string
+	Bot               *gotgbot.Bot
+	ProductRepository *repository.ProductRepository
 }
 
 func (h *WebAppController) Menu(ctx *gin.Context) {
 
-	items := []*Item{
-		{
-			ID:          "qwe",
-			Price:       69990,
-			PhotoURL:    "./img/cafe/bottle.png",
-			Title:       "Вода",
-			Description: "Бутиль очищеної води 18,9 л.️",
-		},
-		{
-			ID:          "ert",
-			Price:       149990,
-			PhotoURL:    "./img/cafe/pump.webp",
-			Title:       "Помпа",
-			Description: "Механічна помпа для бутилю.",
-		},
-		{
-			ID:          "wer",
-			Price:       799990,
-			PhotoURL:    "./img/cafe/filter.png",
-			Title:       "Фільтр",
-			Description: "Фільтр з підігрівом води.",
-		},
+	products, err := h.ProductRepository.FindAll(context.Background())
+	if err != nil {
+		ctx.AbortWithError(500, err)
+		return
 	}
 
 	ctx.HTML(http.StatusOK, "index.go.html", gin.H{
-		"items": items,
+		"items": products,
 	})
 }

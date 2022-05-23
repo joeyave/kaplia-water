@@ -1,16 +1,25 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers"
+	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/message"
 	"github.com/gin-gonic/gin"
 	"github.com/joeyave/kaplia-water/controller"
+	"github.com/joeyave/kaplia-water/repository"
+	"github.com/rs/zerolog/log"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"html/template"
 	"net/http"
 	"os"
+	"time"
 )
 
 func main() {
@@ -33,13 +42,43 @@ func main() {
 		},
 	})
 
-	botController := controller.BotController{}
-
-	webAppController := controller.WebAppController{
-		Bot: bot,
+	mongoClient, err := mongo.NewClient(options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
+	if err != nil {
+		log.Fatal().Err(err).Msg("error creating mongo client")
 	}
-	shopController := controller.ShopController{
-		Bot: bot,
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	err = mongoClient.Connect(ctx)
+	if err != nil {
+		log.Fatal().Err(err)
+	}
+	defer mongoClient.Disconnect(ctx)
+	err = mongoClient.Ping(ctx, readpref.Primary())
+	if err != nil {
+		log.Fatal().Err(err).Msg("error pinging mongo")
+	}
+
+	userRepository := &repository.UserRepository{
+		MongoClient: mongoClient,
+	}
+	productRepository := &repository.ProductRepository{
+		MongoClient: mongoClient,
+	}
+
+	botController := &controller.BotController{
+		UserRepository: userRepository,
+	}
+
+	webAppController := &controller.WebAppController{
+		Bot:               bot,
+		ProductRepository: productRepository,
+	}
+	shopController := &controller.ShopController{
+		Bot:               bot,
+		UserRepository:    userRepository,
+		ProductRepository: productRepository,
 	}
 
 	// Create updater and dispatcher.
@@ -54,15 +93,22 @@ func main() {
 	})
 	dispatcher := updater.Dispatcher
 
-	dispatcher.AddHandler(handlers.NewMessage(func(msg *gotgbot.Message) bool {
+	dispatcher.AddHandlerToGroup(handlers.NewMessage(message.All, botController.RegisterUser), 0)
+
+	dispatcher.AddHandlerToGroup(handlers.NewMessage(func(msg *gotgbot.Message) bool {
 		if msg.ViaBot != nil && msg.ViaBot.Username == bot.Username {
 			return false
 		}
 		return true
-	}, botController.Start))
+	}, botController.Start), 1)
+
+	dispatcher.AddHandlerToGroup(handlers.NewMessage(message.All, botController.UpdateUser), 2)
 
 	router := gin.New()
 	router.SetFuncMap(template.FuncMap{
+		"hex": func(id primitive.ObjectID) string {
+			return id.Hex()
+		},
 		"json": func(s interface{}) string {
 			jsonBytes, err := json.Marshal(s)
 			if err != nil {
