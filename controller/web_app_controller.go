@@ -22,13 +22,28 @@ func (h *WebAppController) Menu(ctx *gin.Context) {
 
 	items := []*Item{
 		{
-			ID:          "1",
+			ID:          "qwe",
 			Price:       69990,
 			PhotoURL:    "./img/cafe/bottle.png",
 			Title:       "Вода",
-			Description: "Капля Water™️",
+			Description: "Бутиль очищеної води 18,9 л.️",
+		},
+		{
+			ID:          "ert",
+			Price:       149990,
+			PhotoURL:    "./img/cafe/pump.webp",
+			Title:       "Помпа",
+			Description: "Механічна помпа для бутилю.",
+		},
+		{
+			ID:          "wer",
+			Price:       799990,
+			PhotoURL:    "./img/cafe/filter.png",
+			Title:       "Фільтр",
+			Description: "Фільтр з підігрівом води.",
 		},
 	}
+
 	ctx.HTML(http.StatusOK, "index.go.html", gin.H{
 		"items": items,
 	})

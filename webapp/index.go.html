@@ -27,7 +27,7 @@
 <section class="cafe-page cafe-items">
 
     {{range $i, $item := .items}}
-        <div class="cafe-item js-item" data-item-id="1" data-item-price="{{$item.Price}}">
+        <div class="cafe-item js-item" data-item-id="{{$item.ID}}" data-item-price="{{$item.Price}}">
             <div class="cafe-item-counter js-item-counter">1</div>
             <div class="cafe-item-photo">
                 <picture class="cafe-item-lottie js-item-lottie">
@@ -49,10 +49,10 @@
             </div>
         </div>
     {{end}}
-    <!--    <div class="cafe-item-shadow"></div>-->
-    <!--    <div class="cafe-item-shadow"></div>-->
-    <!--    <div class="cafe-item-shadow"></div>-->
-    <!--    <div class="cafe-item-shadow"></div>-->
+    <div class="cafe-item-shadow"></div>
+    <div class="cafe-item-shadow"></div>
+    <div class="cafe-item-shadow"></div>
+    <div class="cafe-item-shadow"></div>
 </section>
 <section class="cafe-page cafe-order-overview">
     <div class="cafe-block">
@@ -78,19 +78,28 @@
             {{end}}
         </div>
     </div>
-    <div class="cafe-text-field-wrap">
+    <form class="cafe-text-field-wrap" id="js-order-form">
+        <input type="date" class="cafe-date-field js-order-date-field cafe-block" required>
+        <div class="cafe-text-field-hint">
+            Дата доставки замовлення.
+        </div>
+        <textarea class="cafe-text-field js-order-address-field cafe-block" rows="1"
+                  placeholder="Адреса…" required></textarea>
+        <div class="cafe-text-field-hint">
+            Вулиця, номер будинку, квартири тощо.
+        </div>
         <textarea class="cafe-text-field js-order-comment-field cafe-block" rows="1"
                   placeholder="Додати коментар…"></textarea>
         <div class="cafe-text-field-hint">
             Будь які деталі, прохання та побажання.
         </div>
-    </div>
+    </form>
 </section>
 <div class="cafe-status-wrap">
     <div class="cafe-status js-status"></div>
 </div>
 <script src="./js/jquery.min.js"></script>
 <script src="./js/cafe.js"></script>
-<script>Cafe.init({"apiUrl": "\/cafe\/api", "userId": 0, "userHash": null, "debug": true});</script>
+<script>Cafe.init({"apiUrl": "\/shop\/api", "userId": 0, "userHash": null, "debug": true});</script>
 </body>
 </html>

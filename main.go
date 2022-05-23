@@ -6,7 +6,6 @@ import (
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers"
-	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/message"
 	"github.com/gin-gonic/gin"
 	"github.com/joeyave/kaplia-water/controller"
 	"html/template"
@@ -39,6 +38,9 @@ func main() {
 	webAppController := controller.WebAppController{
 		Bot: bot,
 	}
+	shopController := controller.ShopController{
+		Bot: bot,
+	}
 
 	// Create updater and dispatcher.
 	updater := ext.NewUpdater(&ext.UpdaterOpts{
@@ -52,7 +54,12 @@ func main() {
 	})
 	dispatcher := updater.Dispatcher
 
-	dispatcher.AddHandler(handlers.NewMessage(message.All, botController.Start))
+	dispatcher.AddHandler(handlers.NewMessage(func(msg *gotgbot.Message) bool {
+		if msg.ViaBot != nil && msg.ViaBot.Username == bot.Username {
+			return false
+		}
+		return true
+	}, botController.Start))
 
 	router := gin.New()
 	router.SetFuncMap(template.FuncMap{
@@ -74,6 +81,8 @@ func main() {
 	router.Static("/webapp/js", "./webapp/js")
 
 	router.GET("/webapp/menu", webAppController.Menu)
+
+	router.POST("/shop/api/makeOrder", shopController.MakeOrder)
 
 	go func() {
 		// Start receiving updates.
