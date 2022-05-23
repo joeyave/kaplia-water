@@ -19,7 +19,7 @@ body {
     --page-animation: var(--page-animation-duration) ease;
     --status-height: 48px;
     --accent-color: #31b545;
-    --main-color: #f8a917;
+    --main-color: #1ca3ec;
     --text-color: #222;
     --page-hint-color: #83878a;
     --hint-color: #74787a;
@@ -449,7 +449,7 @@ body {
   
   .cafe-item-add-button .ripple,
   .cafe-item-incr-button .ripple {
-    background-color: #ed960b;
+    background-color: #2389da;
   }
   .cafe-item-decr-button .ripple {
     background-color: #d3362d;

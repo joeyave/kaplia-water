@@ -34,7 +34,7 @@ func main() {
 		},
 	})
 
-	//botController := controller.BotController{}
+	botController := controller.BotController{}
 
 	webAppController := controller.WebAppController{
 		Bot: bot,
@@ -52,30 +52,7 @@ func main() {
 	})
 	dispatcher := updater.Dispatcher
 
-	dispatcher.AddHandler(handlers.NewMessage(message.All, func(bot *gotgbot.Bot, ctx *ext.Context) error {
-
-		markup := gotgbot.InlineKeyboardMarkup{
-			InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
-				{
-					{
-						Text: "Зробити замовлення",
-						WebApp: &gotgbot.WebAppInfo{
-							Url: os.Getenv("HOST") + "/webapp/menu",
-						},
-					},
-				},
-			},
-		}
-
-		_, err := ctx.EffectiveChat.SendMessage(bot, "Почнемо! 💧\nТисни на кнопку нижче, щоб зробити замовлення.", &gotgbot.SendMessageOpts{
-			ReplyMarkup: markup,
-		})
-		if err != nil {
-			return err
-		}
-
-		return nil
-	}))
+	dispatcher.AddHandler(handlers.NewMessage(message.All, botController.Start))
 
 	router := gin.New()
 	router.SetFuncMap(template.FuncMap{
@@ -85,6 +62,9 @@ func main() {
 				return ""
 			}
 			return string(jsonBytes)
+		},
+		"price_to_str": func(price int) string {
+			return fmt.Sprintf("%.2f", float32(price)/1000)
 		},
 	})
 

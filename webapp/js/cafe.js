@@ -94,7 +94,7 @@
       Cafe.updateItem(itemEl, delta);
     },
     formatPrice: function(price) {
-      return '$' + Cafe.formatNumber(price / 1000, 2, '.', ',');
+      return '₴' + Cafe.formatNumber(price / 1000, 2, ',', ' ');
     },
     formatNumber: function(number, decimals, decPoint, thousandsSep) {
       number = (number + '').replace(/[^0-9+\-Ee.]/g, '')
@@ -136,14 +136,14 @@
         } else {
           mainButton.setParams({
             is_visible: !!Cafe.canPay,
-            text: 'PAY ' + Cafe.formatPrice(Cafe.totalPrice),
+            text: 'СПЛАТИТИ ' + Cafe.formatPrice(Cafe.totalPrice),
             color: '#31b545'
           }).hideProgress();
         }
       } else {
         mainButton.setParams({
           is_visible: !!Cafe.canPay,
-          text: 'VIEW ORDER',
+          text: 'ДИВИТИСЯ ЗАМОВЛЕННЯ',
           color: '#31b545'
         }).hideProgress();
       }
