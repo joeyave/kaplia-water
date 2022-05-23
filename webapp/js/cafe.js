@@ -235,11 +235,13 @@ var Cafe = {
             }
 
             let date = $('.js-order-date-field').val();
+            let phone = $('.js-order-phone-field').val();
             let address = $('.js-order-address-field').val();
             let comment = $('.js-order-comment-field').val();
             let params = {
                 order_data: Cafe.getOrderData(),
                 date: date,
+                phone: phone,
                 address: address,
                 comment: comment
             };

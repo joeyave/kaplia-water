@@ -20,6 +20,7 @@ type MakeOrderData struct {
 	OrderedItems []*OrderedItem `json:"order_data"`
 
 	Date    string `json:"date"`
+	Phone   string `json:"phone"`
 	Address string `json:"address"`
 	Comment string `json:"comment"`
 
@@ -52,6 +53,7 @@ func (c *ShopController) MakeOrder(ctx *gin.Context) {
 	}
 
 	fmt.Fprintf(b, "\nДата: %s\n", data.Date)
+	fmt.Fprintf(b, "Номер: %s\n", data.Phone)
 	fmt.Fprintf(b, "Адреса: %s\n", data.Address)
 	if data.Comment != "" {
 		fmt.Fprintf(b, "Коментар: %s\n", data.Comment)
