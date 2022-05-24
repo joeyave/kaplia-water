@@ -87,9 +87,15 @@ func main() {
 	updater := ext.NewUpdater(&ext.UpdaterOpts{
 		ErrorLog: nil,
 		DispatcherOpts: ext.DispatcherOpts{
-			Error:       nil,
-			Panic:       nil,
-			ErrorLog:    nil,
+			Error: botController.Error,
+			Panic: func(b *gotgbot.Bot, ctx *ext.Context, r interface{}) {
+				err, ok := r.(error)
+				if ok {
+					botController.Error(bot, ctx, err)
+				} else {
+					botController.Error(bot, ctx, fmt.Errorf("panic: %s", fmt.Sprint(r)))
+				}
+			}, // todo			ErrorLog:    nil,
 			MaxRoutines: 0,
 		},
 	})

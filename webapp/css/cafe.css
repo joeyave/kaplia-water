@@ -165,7 +165,7 @@ body.order-mode .cafe-items {
     display: flex;
     width: 80px;
     justify-content: space-between;
-    margin:8px auto 0;
+    margin: 8px auto 0;
     position: relative;
     transition: all var(--animation);
 }
@@ -424,6 +424,7 @@ body.order-mode .cafe-order-overview {
     font-family: var(--default-font);
     font-size: 16px;
     /*line-height: 21px;*/
+
     font-weight: 500;
     -webkit-font-smoothing: antialiased;
     padding: 12px 20px 13px;
@@ -438,8 +439,12 @@ body.order-mode .cafe-order-overview {
     user-select: auto;
     cursor: auto;
     width: 100%;
-
 }
+
+input::-webkit-date-and-time-value {
+    text-align: left;
+}
+
 
 .cafe-text-field {
     font-family: var(--default-font);

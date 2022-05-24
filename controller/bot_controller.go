@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/PaulSonOfLars/gotgbot/v2"
@@ -9,6 +10,7 @@ import (
 	"github.com/joeyave/kaplia-water/repository"
 	"github.com/joeyave/kaplia-water/state"
 	"github.com/joeyave/kaplia-water/util"
+	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/mongo"
 	"os"
 	"strconv"
@@ -161,4 +163,52 @@ func (c *BotController) ConfirmOrder(bot *gotgbot.Bot, ctx *ext.Context) error {
 	}
 
 	return nil
+}
+
+func (c *BotController) Error(bot *gotgbot.Bot, ctx *ext.Context, botErr error) ext.DispatcherAction {
+
+	log.Error().Msgf("Error handling update: %v", botErr)
+
+	user, err := c.UserRepository.FindOneByID(context.Background(), ctx.EffectiveUser.Id)
+	if err != nil {
+		log.Error().Err(err).Msg("Error!")
+		return ext.DispatcherActionEndGroups
+	}
+
+	if ctx.CallbackQuery != nil {
+		_, err := ctx.CallbackQuery.Answer(bot, &gotgbot.AnswerCallbackQueryOpts{
+			Text: "Произошла ошибка. Поправим.",
+		})
+		if err != nil {
+			log.Error().Err(err).Msg("Error!")
+			return ext.DispatcherActionEndGroups
+		}
+	} else if ctx.EffectiveChat != nil {
+		_, err := ctx.EffectiveChat.SendMessage(bot, "Серверна помилка. Спробуйте ще раз.", nil)
+		if err != nil {
+			log.Error().Err(err).Msg("Error!")
+			return ext.DispatcherActionEndGroups
+		}
+	}
+
+	// todo: send message to the logs channel
+	logsChannelID, err := strconv.ParseInt(os.Getenv("LOG_CHANNEL"), 10, 64)
+	if err == nil {
+		userJsonBytes, err := json.Marshal(user)
+		if err != nil {
+			log.Error().Err(err).Msg("Error!")
+			return ext.DispatcherActionEndGroups
+		}
+
+		_, err = bot.SendMessage(logsChannelID, fmt.Sprintf("Error handling update!\n<pre>error=%v</pre>\n<pre>user=%s</pre>", botErr, string(userJsonBytes)), &gotgbot.SendMessageOpts{
+			DisableWebPagePreview: true,
+			ParseMode:             "HTML",
+		})
+		if err != nil {
+			log.Error().Err(err).Msg("Error!")
+			return ext.DispatcherActionEndGroups
+		}
+	}
+
+	return ext.DispatcherActionEndGroups
 }
