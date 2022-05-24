@@ -37,6 +37,7 @@ var Cafe = {
         });
         for (let element of document.getElementsByClassName("js-order-date-field")) {
             element.valueAsDate = new Date();
+            element.min = new Date().toLocaleDateString('en-ca');
         }
         Telegram.WebApp.MainButton.setParams({
             text_color: '#fff'
