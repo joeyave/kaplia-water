@@ -21,7 +21,7 @@ type Product struct {
 var products = []*Product{
 	{
 		ID:          primitive.NewObjectID(),
-		Price:       60000,
+		Price:       55000,
 		PhotoURL:    "./img/cafe/water.png",
 		Title:       "Вода 18,9л",
 		Description: "Бутиль очищеної води 18,9 л.️",
@@ -42,6 +42,13 @@ var products = []*Product{
 	},
 	{
 		ID:          primitive.NewObjectID(),
+		Price:       300000,
+		PhotoURL:    "./img/cafe/dispenser.png",
+		Title:       "Диспенсер",
+		Description: "Диспенсер для води.",
+	},
+	{
+		ID:          primitive.NewObjectID(),
 		Price:       290000,
 		PhotoURL:    "./img/cafe/bottle.png",
 		Title:       "Бутиль",
@@ -49,17 +56,31 @@ var products = []*Product{
 	},
 	{
 		ID:          primitive.NewObjectID(),
+		Price:       290000,
+		PhotoURL:    "./img/cafe/bottle-with-holder.png",
+		Title:       "Бутиль з ручкою",
+		Description: "Полікарбонатний бутиль для води з ручкою 18.9 л.",
+	},
+	{
+		ID:          primitive.NewObjectID(),
+		Price:       120000,
+		PhotoURL:    "./img/cafe/funnel.png",
+		Title:       "Воронка",
+		Description: "Воронка для бутилю 18.9 л.",
+	},
+	{
+		ID:          primitive.NewObjectID(),
 		Price:       155000,
 		PhotoURL:    "./img/cafe/holder.png",
 		Title:       "Ручка",
-		Description: "Ручка для переносу бутиля.",
+		Description: "Ручка для переносу бутилю.",
 	},
 	{
 		ID:          primitive.NewObjectID(),
 		Price:       3200000,
 		PhotoURL:    "./img/cafe/cooler.png",
 		Title:       "Кулер підлоговий",
-		Description: "Ручка для переносу бутиля.",
+		Description: "Електронний підлоговий кулер.",
 	},
 }
 

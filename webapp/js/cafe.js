@@ -310,7 +310,7 @@ var Cafe = {
                 onCallback && onCallback(data);
             })
             .catch(error => {
-                onCallback && onCallback({error: 'Server error'});
+                onCallback && onCallback({error: 'Серверна помилка'});
             })
     }
 };

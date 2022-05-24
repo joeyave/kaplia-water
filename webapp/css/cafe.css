@@ -72,9 +72,6 @@ body.closed .cafe-page {
     transition: max-height var(--page-animation), opacity var(--page-animation);
     background-color: var(--block-bg-color);
 }
-.cafe-item-title {
-    white-space: nowrap;
-}
 
 body.order-mode .cafe-items {
     max-height: 0 !important;
@@ -369,6 +366,7 @@ body.order-mode .cafe-order-overview {
 }
 
 .cafe-order-item-photo {
+    flex-shrink: 0;
     text-align: center;
     width: 50px;
     height: 50px;
@@ -403,6 +401,11 @@ body.order-mode .cafe-order-overview {
     -webkit-font-smoothing: antialiased;
     color: var(--page-hint-color);
     padding: 2px 0;
+}
+
+.cafe-item-title {
+    white-space: nowrap;
+    font-size: 12px;
 }
 
 .cafe-order-item-price {
