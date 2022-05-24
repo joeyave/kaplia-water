@@ -172,6 +172,7 @@ body.order-mode .cafe-items {
 
 button {
     cursor: pointer;
+    padding: 6px 10px !important;
 }
 
 button,
@@ -537,6 +538,7 @@ input::-webkit-date-and-time-value {
     display: inline-block;
     max-width: 100%;
     overflow: hidden;
+    font-size: 12px;
     text-overflow: ellipsis;
     vertical-align: top;
     position: relative;
