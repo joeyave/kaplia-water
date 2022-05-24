@@ -11,6 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joeyave/kaplia-water/controller"
 	"github.com/joeyave/kaplia-water/repository"
+	"github.com/joeyave/kaplia-water/state"
+	"github.com/joeyave/kaplia-water/util"
 	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -101,6 +103,9 @@ func main() {
 		}
 		return true
 	}, botController.Start), 1)
+
+	dispatcher.AddHandlerToGroup(handlers.NewCallback(util.CallbackState(state.ConfirmOrder_ChooseTime), botController.ConfirmOrder_ChooseTime), 1)
+	dispatcher.AddHandlerToGroup(handlers.NewCallback(util.CallbackState(state.ConfirmOrder), botController.ConfirmOrder), 1)
 
 	dispatcher.AddHandlerToGroup(handlers.NewMessage(message.All, botController.UpdateUser), 2)
 

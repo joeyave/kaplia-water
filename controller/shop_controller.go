@@ -6,6 +6,8 @@ import (
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/joeyave/kaplia-water/repository"
+	"github.com/joeyave/kaplia-water/state"
+	"github.com/joeyave/kaplia-water/util"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"strings"
 	"time"
@@ -99,12 +101,18 @@ func (c *ShopController) MakeOrder(ctx *gin.Context) {
 		return
 	}
 
+	msg, err := c.Bot.SendMessage(data.Auth.User.ID, "⏰ Ваше замовлення прийняте!\n\nОчікуйте на повідомлення або дзвінок з підтвердженням.", nil)
+	if err != nil {
+		ctx.AbortWithError(500, err)
+		return
+	}
+
 	textForAdmins := fmt.Sprintf("Вітаю! Ви маєте нове замовлення.\n\n%s", b.String())
 	markupForAdmins := gotgbot.InlineKeyboardMarkup{
 		InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 			{
-				{Text: "Відхилити 🚫", CallbackData: "todo"},
-				{Text: "Підтвердити ✅", CallbackData: "todo"},
+				{Text: "Відхилити 🚫", CallbackData: util.CallbackData(state.DeclineOrder, fmt.Sprintf("%d:%d", data.Auth.User.ID, msg.MessageId))},
+				{Text: "Підтвердити ✅", CallbackData: util.CallbackData(state.ConfirmOrder_ChooseTime, fmt.Sprintf("%d:%d", data.Auth.User.ID, msg.MessageId))},
 			},
 		},
 	}
@@ -123,12 +131,6 @@ func (c *ShopController) MakeOrder(ctx *gin.Context) {
 			return
 		}
 		time.Sleep(1 * time.Second)
-	}
-
-	_, err = c.Bot.SendMessage(data.Auth.User.ID, "Ваше замовлення прийняте!\n\nЧекайте на повідомлення або дзвінок з підтвердженням.", nil)
-	if err != nil {
-		ctx.AbortWithError(500, err)
-		return
 	}
 
 	ctx.Status(200)
