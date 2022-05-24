@@ -111,7 +111,7 @@ func (c *ShopController) MakeOrder(ctx *gin.Context) {
 	markupForAdmins := gotgbot.InlineKeyboardMarkup{
 		InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 			{
-				{Text: "Відхилити 🚫", CallbackData: util.CallbackData(state.DeclineOrder, fmt.Sprintf("%d:%d", data.Auth.User.ID, msg.MessageId))},
+				//{Text: "Відхилити 🚫", CallbackData: util.CallbackData(state.DeclineOrder, fmt.Sprintf("%d:%d", data.Auth.User.ID, msg.MessageId))},
 				{Text: "Підтвердити ✅", CallbackData: util.CallbackData(state.ConfirmOrder_ChooseTime, fmt.Sprintf("%d:%d", data.Auth.User.ID, msg.MessageId))},
 			},
 		},
