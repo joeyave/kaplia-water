@@ -407,6 +407,9 @@ body.order-mode .cafe-order-overview {
 .cafe-item-title {
     white-space: nowrap;
     font-size: 12px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .cafe-order-item-price {
