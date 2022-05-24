@@ -21,7 +21,7 @@ type Product struct {
 var products = []*Product{
 	{
 		ID:          primitive.NewObjectID(),
-		Price:       69990,
+		Price:       60000,
 		PhotoURL:    "./img/cafe/water.png",
 		Title:       "Вода 18,9л",
 		Description: "Бутиль очищеної води 18,9 л.️",
@@ -35,7 +35,7 @@ var products = []*Product{
 	},
 	{
 		ID:          primitive.NewObjectID(),
-		Price:       155000,
+		Price:       250000,
 		PhotoURL:    "./img/cafe/epump.png",
 		Title:       "Помпа електрична",
 		Description: "Електронна помпа для бутилю.",
