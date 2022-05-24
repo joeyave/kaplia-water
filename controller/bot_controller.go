@@ -36,7 +36,7 @@ func (c *BotController) Start(bot *gotgbot.Bot, ctx *ext.Context) error {
 		},
 	}
 
-	_, err := ctx.EffectiveChat.SendMessage(bot, "Почнемо 💧\n\nТисни на кнопку нижче, щоб зробити замовлення!", &gotgbot.SendMessageOpts{
+	_, err := ctx.EffectiveChat.SendMessage(bot, "Почнемо 💧\n\nТисни на кнопку нижче, щоб зробити замовлення!\n\nКонтакти:\n+380991721531 (Telegram)\n+380961721532 (Viber)\n+380731721533 (Whatsapp)", &gotgbot.SendMessageOpts{
 		ReplyMarkup: markup,
 	})
 	if err != nil {
