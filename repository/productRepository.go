@@ -42,7 +42,7 @@ var products = []*Product{
 	},
 	{
 		ID:          primitive.NewObjectID(),
-		Price:       300000,
+		Price:       370000,
 		PhotoURL:    "./img/cafe/dispenser.png",
 		Title:       "Диспенсер",
 		Description: "Диспенсер для води.",
@@ -63,14 +63,14 @@ var products = []*Product{
 	},
 	{
 		ID:          primitive.NewObjectID(),
-		Price:       120000,
+		Price:       80000,
 		PhotoURL:    "./img/cafe/funnel.png",
 		Title:       "Воронка",
 		Description: "Воронка для бутилю 18.9 л.",
 	},
 	{
 		ID:          primitive.NewObjectID(),
-		Price:       155000,
+		Price:       80000,
 		PhotoURL:    "./img/cafe/holder.png",
 		Title:       "Ручка",
 		Description: "Ручка для переносу бутилю.",
