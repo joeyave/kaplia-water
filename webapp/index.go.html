@@ -27,7 +27,9 @@
 <section class="cafe-page cafe-items">
 
     {{range $i, $item := .items}}
-        <div class="cafe-item js-item" data-item-id="{{hex $item.ID}}" data-item-price="{{$item.Price}}">
+        <div class="cafe-item js-item" data-item-id="{{hex $item.ID}}"
+             data-item-wholesale-price="{{$item.WholesalePrice}}"
+             data-item-wholesale-threshold="{{$item.WholesaleThreshold}}" data-item-price="{{$item.Price}}">
             <div class="cafe-item-counter js-item-counter">1</div>
             <div class="cafe-item-photo">
                 <picture class="cafe-item-lottie js-item-lottie">
@@ -36,7 +38,7 @@
             </div>
             <div class="cafe-item-label">
                 <span class="cafe-item-title">{{$item.Title}}</span>
-                <span class="cafe-item-price">₴{{price_to_str $item.Price}}</span>
+                <span class="cafe-item-price js-item-price">₴{{price_to_str $item.Price}}</span>
             </div>
             <div class="cafe-item-buttons">
                 <button class="cafe-item-decr-button js-item-decr-btn button-item ripple-handler">

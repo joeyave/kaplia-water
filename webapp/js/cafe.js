@@ -66,6 +66,8 @@ var Cafe = {
     },
     updateItem: function (itemEl, delta) {
         var price = +itemEl.data('item-price');
+        var wholesale_price = +itemEl.data('item-wholesale-price') || 0;
+        var wholesale_threshold = +itemEl.data('item-wholesale-threshold') || 0;
         var count = +itemEl.data('item-count') || 0;
         var counterEl = $('.js-item-counter', itemEl);
         counterEl.text(count ? count : 1);
@@ -84,6 +86,19 @@ var Cafe = {
         orderItemEl.toggleClass('selected', count > 0);
         var orderPriceEl = $('.js-order-item-price', orderItemEl);
         var item_price = count * price;
+
+        if (wholesale_price && wholesale_threshold) {
+            if (count >= wholesale_threshold) {
+                item_price = count * wholesale_price;
+            }
+            var priceEl = $('.js-item-price', itemEl);
+            if (count >= wholesale_threshold) {
+                priceEl.text(Cafe.formatPrice(wholesale_price))
+            } else {
+                priceEl.text(Cafe.formatPrice(price))
+            }
+        }
+
         orderPriceEl.text(Cafe.formatPrice(item_price));
 
         Cafe.updateTotalPrice();
@@ -92,6 +107,7 @@ var Cafe = {
         if (Cafe.isLoading || Cafe.isClosed) {
             return false;
         }
+
         var count = +itemEl.data('item-count') || 0;
         count += delta;
         if (count < 0) {
