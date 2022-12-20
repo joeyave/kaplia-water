@@ -20,6 +20,17 @@ type Product struct {
 	Description        string             `bson:"description"`
 }
 
+func (p *Product) GetPriceBasedOnCount(count int) int {
+	productPrice := p.Price
+
+	if p.WholesalePrice != 0 && p.WholesaleThreshold != 0 {
+		if count >= p.WholesaleThreshold {
+			productPrice = p.WholesalePrice
+		}
+	}
+	return productPrice
+}
+
 var products = []*Product{
 	{
 		ID:                 objectIDFromHex("639789d7cbeb25111d000000"),

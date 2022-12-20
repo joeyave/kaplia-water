@@ -67,7 +67,7 @@ func (c *ShopController) MakeOrder(ctx *gin.Context) {
 			return
 		}
 
-		price := float32(product.Price*orderedProduct.Count) / 1000
+		price := float32(product.GetPriceBasedOnCount(orderedProduct.Count)*orderedProduct.Count) / 1000
 		totalPrice += price
 
 		fmt.Fprintf(b, "%s x%d - <b>₴%.2f</b>\n", product.Title, orderedProduct.Count, price)

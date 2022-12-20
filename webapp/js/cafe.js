@@ -271,7 +271,7 @@ var Cafe = {
                 date: date,
                 phone: phone,
                 address: address,
-                comment: comment
+                comment: comment,
             };
             if (!Telegram.WebApp.initDataUnsafe ||
                 !Telegram.WebApp.initDataUnsafe.user ||
