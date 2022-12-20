@@ -180,11 +180,11 @@ var Cafe = {
             var wholesale_threshold = +itemEl.data('item-wholesale-threshold') || 0;
             var count = +itemEl.data('item-count') || 0;
 
-            var item_price = count * price;
+            var item_price = price;
 
             if (wholesale_price && wholesale_threshold) {
                 if (count >= wholesale_threshold) {
-                    item_price = count * wholesale_price;
+                    item_price = wholesale_price;
                 }
             }
 
