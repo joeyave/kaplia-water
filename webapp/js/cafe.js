@@ -176,8 +176,19 @@ var Cafe = {
         $('.js-item').each(function () {
             var itemEl = $(this)
             var price = +itemEl.data('item-price');
+            var wholesale_price = +itemEl.data('item-wholesale-price') || 0;
+            var wholesale_threshold = +itemEl.data('item-wholesale-threshold') || 0;
             var count = +itemEl.data('item-count') || 0;
-            total_price += price * count;
+
+            var item_price = count * price;
+
+            if (wholesale_price && wholesale_threshold) {
+                if (count >= wholesale_threshold) {
+                    item_price = count * wholesale_price;
+                }
+            }
+
+            total_price += item_price * count;
         });
         Cafe.canPay = total_price > 0;
         Cafe.totalPrice = total_price;
